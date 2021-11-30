@@ -9,26 +9,29 @@ def loadWords(filepath):
 
 def run():
     print("Welcome to Hangman!")
-    # words = loadWords("words.txt")
-    words = ["hola", "mundo", "perro", "gato", "casa", "coche", "casa", "coche"]
+    words = loadWords("files/words.txt")
     word = random.choice(words)
     letters = list(word)
     missing_word = []
     [missing_word.append({"value": x, "check": False}) for x in letters]
     win = False
     attempts = 0
-    while win == False and attempts < 6:
+    while win == False and attempts < 12:
         print_word(missing_word, attempts)
         new_letter = input("Nueva letra: ")
         missing_word = [letter | {"check": letter["value"] == new_letter or letter["check"]} for letter in missing_word]
         win = reduce(lambda x, y: x and y, [d['check'] for d in missing_word] )
         attempts = attempts + 1
     print_word(missing_word, attempts)
-    print("Tu ganas!!!")
+    if win:
+        print("Tu ganas!")
+    else:
+        print("Tu pierdes!")
+        print("La palabra era: " + word)
 
 def print_word(word, attempts):
     system("clear")
-    print("Digite una letra y descubra la palabra:")
+    print("Digite una letra y descubre la palabra:")
     secret_word = ""
     for letter in word:
         if(letter["check"]):
